@@ -41,7 +41,13 @@ var GenericRedirectTest = /*#__PURE__*/function () {
     value: function test() {
       var _this = this;
 
-      var cachebust = "?bust=".concat(Math.random());
+      var prefix = '?';
+
+      if (this._from.indexOf('?') !== -1) {
+        prefix = '&';
+      }
+
+      var cachebust = "".concat(prefix, "bust=").concat(Math.random());
       it(this._testTitle, function () {
         var req = chai.request(_this._secureUri).get("".concat(_this._from).concat(cachebust)).redirects(0);
 

@@ -11,7 +11,11 @@ class GenericRedirectTest {
   }
 
   test() {
-    const cachebust = `?bust=${Math.random()}`;
+    let prefix = '?';
+    if (this._from.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+    const cachebust = `${prefix}bust=${Math.random()}`;
     it(this._testTitle, () => {
       let req = chai.request(this._secureUri).get(`${this._from}${cachebust}`).redirects(0);
       if (! (Object.keys(this._hostHeaders).length === 0 && this._hostHeaders.constructor === Object)) {

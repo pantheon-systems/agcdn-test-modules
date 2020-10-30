@@ -11,13 +11,17 @@ const chai = require('chai');
 const testRequestHeaderExists = ({domain, headerName, path}) => {
   const secureUri = `https://${domain}`;
   const url = path || '/';
+  let prefix = '?';
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
 
   it(`the "${headerName}" header should be present in the request [domain: ${domain}] [path: ${url}]`, () => {
     return chai.request(secureUri)
-      .get(`${url}?bust=${Math.random}`)
+      .get(`${url}${prefix}bust=${Math.random()}`)
       .then((res) => {
         res.should.be.json;
-        res.body.headers.should.have.property(headerName);
+        res.headers.should.have.property(headerName);
       });
   });
 };
@@ -31,15 +35,19 @@ const testRequestHeaderExists = ({domain, headerName, path}) => {
 const testRequestHeaderValueIncludes = ({domain, headerName, headerValue, path}) => {
   const secureUri = `https://${domain}`;
   const url = path || '/';
+  let prefix = '?';
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
 
   it(`the "${headerName}" request header should include "${headerValue}" [domain: ${domain}] [path: ${url}]`, () => {
     return chai.request(secureUri)
-      .get(`${url}?bust=${Math.random()}`)
+      .get(`${url}${prefix}bust=${Math.random()}`)
       .redirects(0)
       .then((res) => {
         res.should.be.json;
-        res.body.headers.should.have.property(headerName);
-        res.body.headers[headerName].should.include(headerValue);
+        res.headers.should.have.property(headerName);
+        res.headers[headerName].should.include(headerValue);
       });
   });
 };
@@ -60,10 +68,14 @@ const testRequestHeaderValueMatches = ({
   extraHeaders = {}
 } = {}) => {
   const secureUri = `https://${domain}`;
+  let prefix = '?';
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
 
   it(`the "${headerName}" request header should be set to "${headerValue}" [domain: ${domain}] [path: ${path}]`, () => {
     const req = chai.request(secureUri)
-      .get(`${path}?bust=${Math.random()}`)
+      .get(`${path}${prefix}bust=${Math.random()}`)
       .redirects(0);
 
     if (!(Object.keys(extraHeaders).length === 0 && extraHeaders.constructor === Object)) {
@@ -72,8 +84,8 @@ const testRequestHeaderValueMatches = ({
     
     return req.then((res) => {
       res.should.be.json;
-      res.body.headers.should.have.property(headerName);
-      res.body.headers[headerName].should.eq(headerValue);
+      res.headers.should.have.property(headerName);
+      res.headers[headerName].should.eq(headerValue);
     });
   });
 };

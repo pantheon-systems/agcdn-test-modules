@@ -1,14 +1,16 @@
 {
   "name": "@pantheon-systems/agcdn-test-modules",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "AGCDN test modules",
   "type": "commonjs",
   "main": "build/index.js",
   "scripts": {
     "build": "babel src -d build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require @babel/register --timeout 15000"
   },
-  "files": [ "build" ],
+  "files": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/pantheon-systems/agcdn-test-modules"
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1"
+    "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1"
   }
 }

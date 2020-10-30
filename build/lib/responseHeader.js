@@ -15,7 +15,13 @@ var testResponseHeaderExists = function testResponseHeaderExists(domain, headerN
   var path = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
   var secureUri = "https://".concat(domain).concat(path);
   it("the \"".concat(headerName, "\" header should be present in the response [domain: ").concat(domain, "]"), function () {
-    return chai.request(secureUri).get("/?bust=".concat(Math.random())).redirects(0).then(function (res) {
+    var prefix = '?';
+
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+
+    return chai.request(secureUri).get("".concat(prefix, "bust=").concat(Math.random())).redirects(0).then(function (res) {
       res.should.have.header(headerName);
     });
   });
@@ -33,7 +39,13 @@ var testResponseHeaderValueIncludes = function testResponseHeaderValueIncludes(d
   var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
   var secureUri = "https://".concat(domain).concat(path);
   it("the \"".concat(headerName, "\" response header should include \"").concat(headerValue, "\" [domain: ").concat(domain, "]"), function () {
-    return chai.request(secureUri).get("/?bust=".concat(Math.random())).redirects(0).then(function (res) {
+    var prefix = '?';
+
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+
+    return chai.request(secureUri).get("".concat(prefix, "bust=").concat(Math.random())).redirects(0).then(function (res) {
       res.should.have.header(headerName);
       res.headers[headerName.toLowerCase()].should.include(headerValue);
     });
@@ -52,7 +64,13 @@ var testResponseHeaderValueMatches = function testResponseHeaderValueMatches(dom
   var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
   var secureUri = "https://".concat(domain).concat(path);
   it("the \"".concat(headerName, "\" response header should be set to \"").concat(headerValue, "\" [domain: ").concat(domain, "]"), function () {
-    return chai.request(secureUri).get("/?bust=".concat(Math.random())).redirects(0).then(function (res) {
+    var prefix = '?';
+
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+
+    return chai.request(secureUri).get("".concat(prefix, "bust=").concat(Math.random())).redirects(0).then(function (res) {
       res.should.have.header(headerName);
       res.headers[headerName].should.eq(headerValue);
     });
@@ -73,7 +91,13 @@ var testResponseHeaderValueCountIs = function testResponseHeaderValueCountIs(dom
   var path = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '/';
   var secureUri = "https://".concat(domain).concat(path);
   it("the \"".concat(headerName, "\" response header should contain ").concat(count, " values [domain: ").concat(domain, "]"), function () {
-    return chai.request(secureUri).get("/?bust=".concat(Math.random())).redirects(0).then(function (res) {
+    var prefix = '?';
+
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+
+    return chai.request(secureUri).get("".concat(prefix, "bust=").concat(Math.random())).redirects(0).then(function (res) {
       res.should.have.header(headerName);
       var actualCount = res.headers[headerName.toLowerCase()].split(splitOn).length;
       actualCount.should.eq(count);

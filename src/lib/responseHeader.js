@@ -13,8 +13,12 @@ const testResponseHeaderExists = (domain, headerName, path = '/') => {
   const secureUri = `https://${domain}${path}`;
 
   it(`the "${headerName}" header should be present in the response [domain: ${domain}]`, () => {
+    let prefix = '?';
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
     return chai.request(secureUri)
-      .get(`/?bust=${Math.random()}`)
+      .get(`${prefix}bust=${Math.random()}`)
       .redirects(0)
       .then((res) => {
         res.should.have.header(headerName);
@@ -33,8 +37,12 @@ const testResponseHeaderValueIncludes = (domain, headerName, headerValue, path =
   const secureUri = `https://${domain}${path}`;
 
   it(`the "${headerName}" response header should include "${headerValue}" [domain: ${domain}]`, () => {
+    let prefix = '?';
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
     return chai.request(secureUri)
-      .get(`/?bust=${Math.random()}`)
+      .get(`${prefix}bust=${Math.random()}`)
       .redirects(0)
       .then((res) => {
         res.should.have.header(headerName);
@@ -54,8 +62,12 @@ const testResponseHeaderValueMatches = (domain, headerName, headerValue, path = 
   const secureUri = `https://${domain}${path}`;
 
   it(`the "${headerName}" response header should be set to "${headerValue}" [domain: ${domain}]`, () => {
+    let prefix = '?';
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
     return chai.request(secureUri)
-      .get(`/?bust=${Math.random()}`)
+      .get(`${prefix}bust=${Math.random()}`)
       .redirects(0)
       .then((res) => {
         res.should.have.header(headerName);
@@ -76,8 +88,12 @@ const testResponseHeaderValueCountIs = (domain, headerName, count, splitOn = ','
   const secureUri = `https://${domain}${path}`;
 
   it(`the "${headerName}" response header should contain ${count} values [domain: ${domain}]`, () => {
+    let prefix = '?';
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
     return chai.request(secureUri)
-      .get(`/?bust=${Math.random()}`)
+      .get(`${prefix}bust=${Math.random()}`)
       .redirects(0)
       .then((res) => {
         res.should.have.header(headerName);

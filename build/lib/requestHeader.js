@@ -16,10 +16,16 @@ var testRequestHeaderExists = function testRequestHeaderExists(_ref) {
       path = _ref.path;
   var secureUri = "https://".concat(domain);
   var url = path || '/';
+  var prefix = '?';
+
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
+
   it("the \"".concat(headerName, "\" header should be present in the request [domain: ").concat(domain, "] [path: ").concat(url, "]"), function () {
-    return chai.request(secureUri).get("".concat(url, "?bust=").concat(Math.random)).then(function (res) {
+    return chai.request(secureUri).get("".concat(url).concat(prefix, "bust=").concat(Math.random())).then(function (res) {
       res.should.be.json;
-      res.body.headers.should.have.property(headerName);
+      res.headers.should.have.property(headerName);
     });
   });
 };
@@ -38,11 +44,17 @@ var testRequestHeaderValueIncludes = function testRequestHeaderValueIncludes(_re
       path = _ref2.path;
   var secureUri = "https://".concat(domain);
   var url = path || '/';
+  var prefix = '?';
+
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
+
   it("the \"".concat(headerName, "\" request header should include \"").concat(headerValue, "\" [domain: ").concat(domain, "] [path: ").concat(url, "]"), function () {
-    return chai.request(secureUri).get("".concat(url, "?bust=").concat(Math.random())).redirects(0).then(function (res) {
+    return chai.request(secureUri).get("".concat(url).concat(prefix, "bust=").concat(Math.random())).redirects(0).then(function (res) {
       res.should.be.json;
-      res.body.headers.should.have.property(headerName);
-      res.body.headers[headerName].should.include(headerValue);
+      res.headers.should.have.property(headerName);
+      res.headers[headerName].should.include(headerValue);
     });
   });
 };
@@ -67,8 +79,14 @@ var testRequestHeaderValueMatches = function testRequestHeaderValueMatches() {
       extraHeaders = _ref3$extraHeaders === void 0 ? {} : _ref3$extraHeaders;
 
   var secureUri = "https://".concat(domain);
+  var prefix = '?';
+
+  if (path.indexOf('?') !== -1) {
+    prefix = '&';
+  }
+
   it("the \"".concat(headerName, "\" request header should be set to \"").concat(headerValue, "\" [domain: ").concat(domain, "] [path: ").concat(path, "]"), function () {
-    var req = chai.request(secureUri).get("".concat(path, "?bust=").concat(Math.random())).redirects(0);
+    var req = chai.request(secureUri).get("".concat(path).concat(prefix, "bust=").concat(Math.random())).redirects(0);
 
     if (!(Object.keys(extraHeaders).length === 0 && extraHeaders.constructor === Object)) {
       req.set(extraHeaders);
@@ -76,8 +94,8 @@ var testRequestHeaderValueMatches = function testRequestHeaderValueMatches() {
 
     return req.then(function (res) {
       res.should.be.json;
-      res.body.headers.should.have.property(headerName);
-      res.body.headers[headerName].should.eq(headerValue);
+      res.headers.should.have.property(headerName);
+      res.headers[headerName].should.eq(headerValue);
     });
   });
 };
