@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "build/index.js",
   "scripts": {
-    "build": "babel src -d build",
+    "build": "babel src -d build && cp src/lib/pantheon_robots.txt build/lib/",
     "test": "mocha --require @babel/register --timeout 15000"
   },
   "files": [
