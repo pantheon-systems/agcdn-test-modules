@@ -10,6 +10,10 @@ describe('Test the "responseHeader" methods', () => {
     responseHeaderTest.exists('httpbin.org', 'well-known-test', '/response-headers?well-known-test=asdf');
   });
 
+  describe('Test the "notExists" method', () => {
+    responseHeaderTest.notExists('httpbin.org', 'well-known-test', '/response-headers?not-this=one');
+  });
+
   describe('Test the "includes" method', () => {
     responseHeaderTest.includes('httpbin.org', 'well-known-test', 'asdf', '/response-headers?well-known-test=qwertasdfuiop');
   });

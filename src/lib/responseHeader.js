@@ -27,6 +27,29 @@ const testResponseHeaderExists = (domain, headerName, path = '/') => {
 };
 
 /**
+ * Check that a response header does not exist.
+ * @param {string} domain The domain to access.
+ * @param {string} headerName The header name to check.
+ * @param {string} [path=/] The path to check.
+ */
+const testResponseHeaderNotExists = (domain, headerName, path = '/') => {
+  const secureUri = `https://${domain}${path}`;
+
+  it(`the "${headerName}" header should not be present in the response [domain: ${domain}, path: ${path}]`, () => {
+    let prefix = '?';
+    if (path.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+    return chai.request(secureUri)
+      .get(`${prefix}bust=${Math.random()}`)
+      .redirects(0)
+      .then((res) => {
+        res.should.not.have.header(headerName);
+      });
+  });
+};
+
+/**
  * Test that a response header is present and includes a substring.
  * @param {string} domain The domain to access.
  * @param {string} headerName The header name to check.
@@ -105,6 +128,7 @@ const testResponseHeaderValueCountIs = (domain, headerName, count, splitOn = ','
 
 module.exports = {
   exists: testResponseHeaderExists,
+  notExists: testResponseHeaderNotExists,
   includes: testResponseHeaderValueIncludes,
   equals: testResponseHeaderValueMatches,
   countEquals: testResponseHeaderValueCountIs

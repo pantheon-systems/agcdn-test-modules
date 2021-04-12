@@ -1,6 +1,6 @@
 {
   "name": "@pantheon-systems/agcdn-test-modules",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "AGCDN test modules",
   "type": "commonjs",
   "main": "build/index.js",
