@@ -12,7 +12,7 @@ const chai = require('chai');
 const testResponseHeaderExists = (domain, headerName, path = '/') => {
   const secureUri = `https://${domain}${path}`;
 
-  it(`the "${headerName}" header should be present in the response [domain: ${domain}]`, () => {
+  it(`the "${headerName}" header should be present in the response [domain: ${domain}, path: ${path}]`, () => {
     let prefix = '?';
     if (path.indexOf('?') !== -1) {
       prefix = '&';
@@ -36,7 +36,7 @@ const testResponseHeaderExists = (domain, headerName, path = '/') => {
 const testResponseHeaderValueIncludes = (domain, headerName, headerValue, path = '/') => {
   const secureUri = `https://${domain}${path}`;
 
-  it(`the "${headerName}" response header should include "${headerValue}" [domain: ${domain}]`, () => {
+  it(`the "${headerName}" response header should include "${headerValue}" [domain: ${domain}, path: ${path}]`, () => {
     let prefix = '?';
     if (path.indexOf('?') !== -1) {
       prefix = '&';
@@ -61,7 +61,7 @@ const testResponseHeaderValueIncludes = (domain, headerName, headerValue, path =
 const testResponseHeaderValueMatches = (domain, headerName, headerValue, path = '/') => {
   const secureUri = `https://${domain}${path}`;
 
-  it(`the "${headerName}" response header should be set to "${headerValue}" [domain: ${domain}]`, () => {
+  it(`the "${headerName}" response header should be set to "${headerValue}" [domain: ${domain}, path: ${path}]`, () => {
     let prefix = '?';
     if (path.indexOf('?') !== -1) {
       prefix = '&';
@@ -87,7 +87,7 @@ const testResponseHeaderValueMatches = (domain, headerName, headerValue, path = 
 const testResponseHeaderValueCountIs = (domain, headerName, count, splitOn = ',', path = '/') => {
   const secureUri = `https://${domain}${path}`;
 
-  it(`the "${headerName}" response header should contain ${count} values [domain: ${domain}]`, () => {
+  it(`the "${headerName}" response header should contain ${count} values [domain: ${domain}, path: ${path}]`, () => {
     let prefix = '?';
     if (path.indexOf('?') !== -1) {
       prefix = '&';

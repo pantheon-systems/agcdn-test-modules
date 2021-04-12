@@ -14,7 +14,7 @@ var chai = require('chai'); // Note that we're not doing a "describe()" block he
 var testResponseHeaderExists = function testResponseHeaderExists(domain, headerName) {
   var path = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
   var secureUri = "https://".concat(domain).concat(path);
-  it("the \"".concat(headerName, "\" header should be present in the response [domain: ").concat(domain, "]"), function () {
+  it("the \"".concat(headerName, "\" header should be present in the response [domain: ").concat(domain, ", path: ").concat(path, "]"), function () {
     var prefix = '?';
 
     if (path.indexOf('?') !== -1) {
@@ -38,7 +38,7 @@ var testResponseHeaderExists = function testResponseHeaderExists(domain, headerN
 var testResponseHeaderValueIncludes = function testResponseHeaderValueIncludes(domain, headerName, headerValue) {
   var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
   var secureUri = "https://".concat(domain).concat(path);
-  it("the \"".concat(headerName, "\" response header should include \"").concat(headerValue, "\" [domain: ").concat(domain, "]"), function () {
+  it("the \"".concat(headerName, "\" response header should include \"").concat(headerValue, "\" [domain: ").concat(domain, ", path: ").concat(path, "]"), function () {
     var prefix = '?';
 
     if (path.indexOf('?') !== -1) {
@@ -63,7 +63,7 @@ var testResponseHeaderValueIncludes = function testResponseHeaderValueIncludes(d
 var testResponseHeaderValueMatches = function testResponseHeaderValueMatches(domain, headerName, headerValue) {
   var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
   var secureUri = "https://".concat(domain).concat(path);
-  it("the \"".concat(headerName, "\" response header should be set to \"").concat(headerValue, "\" [domain: ").concat(domain, "]"), function () {
+  it("the \"".concat(headerName, "\" response header should be set to \"").concat(headerValue, "\" [domain: ").concat(domain, ", path: ").concat(path, "]"), function () {
     var prefix = '?';
 
     if (path.indexOf('?') !== -1) {
@@ -90,7 +90,7 @@ var testResponseHeaderValueCountIs = function testResponseHeaderValueCountIs(dom
   var splitOn = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ',';
   var path = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '/';
   var secureUri = "https://".concat(domain).concat(path);
-  it("the \"".concat(headerName, "\" response header should contain ").concat(count, " values [domain: ").concat(domain, "]"), function () {
+  it("the \"".concat(headerName, "\" response header should contain ").concat(count, " values [domain: ").concat(domain, ", path: ").concat(path, "]"), function () {
     var prefix = '?';
 
     if (path.indexOf('?') !== -1) {
