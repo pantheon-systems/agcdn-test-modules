@@ -43,6 +43,18 @@ class CanonicalRedirectTest extends GenericRedirectTest {
   }
 }
 
+class VanityRedirectTest extends GenericRedirectTest {
+  constructor(domain, canonicalFrom, canonicalTo) {
+    super(domain, '/', '/');
+    this._result_domain = `https://${canonicalTo}`;
+    this._domainFrom = canonicalFrom;
+    this._domainTo = canonicalTo;
+    this._from = '/';
+    this._to = `/${canonicalTo.split('/').slice(1).join('/')}`;
+    this._testTitle = `browsing to "${canonicalFrom}" should redirect to "${canonicalTo}"`;
+  }
+}
+
 module.exports = {
   generic: (domain, redirFrom, redirTo) => {
     const testClass = new GenericRedirectTest(domain, redirFrom, redirTo);
@@ -50,6 +62,10 @@ module.exports = {
   },
   canonical: (domain, canonicalFrom, canonicalTo) => {
     const testClass = new CanonicalRedirectTest(domain, canonicalFrom, canonicalTo);
+    testClass.test();
+  },
+  vanity: (domain, vanityFrom, vanityTo) => {
+    const testClass = new VanityRedirectTest(domain, vanityFrom, vanityTo);
     testClass.test();
   }
 };
