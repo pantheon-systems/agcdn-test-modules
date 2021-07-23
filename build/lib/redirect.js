@@ -97,29 +97,6 @@ var CanonicalRedirectTest = /*#__PURE__*/function (_GenericRedirectTest) {
   return CanonicalRedirectTest;
 }(GenericRedirectTest);
 
-var VanityRedirectTest = /*#__PURE__*/function (_GenericRedirectTest2) {
-  _inherits(VanityRedirectTest, _GenericRedirectTest2);
-
-  var _super2 = _createSuper(VanityRedirectTest);
-
-  function VanityRedirectTest(domain, canonicalFrom, canonicalTo) {
-    var _this3;
-
-    _classCallCheck(this, VanityRedirectTest);
-
-    _this3 = _super2.call(this, domain, '/', '/');
-    _this3._result_domain = "https://".concat(canonicalTo);
-    _this3._domainFrom = canonicalFrom;
-    _this3._domainTo = canonicalTo;
-    _this3._from = '/';
-    _this3._to = "/".concat(canonicalTo.split('/').slice(1).join('/'));
-    _this3._testTitle = "browsing to \"".concat(canonicalFrom, "\" should redirect to \"").concat(canonicalTo, "\"");
-    return _this3;
-  }
-
-  return VanityRedirectTest;
-}(GenericRedirectTest);
-
 module.exports = {
   generic: function generic(domain, redirFrom, redirTo) {
     var testClass = new GenericRedirectTest(domain, redirFrom, redirTo);
@@ -129,8 +106,19 @@ module.exports = {
     var testClass = new CanonicalRedirectTest(domain, canonicalFrom, canonicalTo);
     testClass.test();
   },
-  vanity: function vanity(domain, vanityFrom, vanityTo) {
-    var testClass = new VanityRedirectTest(domain, vanityFrom, vanityTo);
-    testClass.test();
+  vanity: function vanity(vanityDomain, resultDomain, resultPath) {
+    var prefix = '?';
+
+    if (resultPath.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+
+    var cacheBust = "".concat(prefix, "bust=").concat(Math.random());
+    it("browsing to \"".concat(vanityDomain, "\" should redirect to \"https://").concat(resultDomain).concat(resultPath, "\" [domain: ").concat(vanityDomain, "]"), function () {
+      var req = chai.request("https://".concat(vanityDomain)).get("/".concat(cacheBust)).redirects(0);
+      return req.then(function (res) {
+        res.should.redirectTo("https://".concat(resultDomain).concat(resultPath).concat(cacheBust));
+      });
+    });
   }
 };

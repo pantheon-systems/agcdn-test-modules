@@ -43,18 +43,6 @@ class CanonicalRedirectTest extends GenericRedirectTest {
   }
 }
 
-class VanityRedirectTest extends GenericRedirectTest {
-  constructor(domain, canonicalFrom, canonicalTo) {
-    super(domain, '/', '/');
-    this._result_domain = `https://${canonicalTo}`;
-    this._domainFrom = canonicalFrom;
-    this._domainTo = canonicalTo;
-    this._from = '/';
-    this._to = `/${canonicalTo.split('/').slice(1).join('/')}`;
-    this._testTitle = `browsing to "${canonicalFrom}" should redirect to "${canonicalTo}"`;
-  }
-}
-
 module.exports = {
   generic: (domain, redirFrom, redirTo) => {
     const testClass = new GenericRedirectTest(domain, redirFrom, redirTo);
@@ -64,8 +52,17 @@ module.exports = {
     const testClass = new CanonicalRedirectTest(domain, canonicalFrom, canonicalTo);
     testClass.test();
   },
-  vanity: (domain, vanityFrom, vanityTo) => {
-    const testClass = new VanityRedirectTest(domain, vanityFrom, vanityTo);
-    testClass.test();
+  vanity: (vanityDomain, resultDomain, resultPath) => {
+    let prefix = '?';
+    if (resultPath.indexOf('?') !== -1) {
+      prefix = '&';
+    }
+    const cacheBust = `${prefix}bust=${Math.random()}`;
+    it(`browsing to "${vanityDomain}" should redirect to "https://${resultDomain}${resultPath}" [domain: ${vanityDomain}]`, () => {
+      let req = chai.request(`https://${vanityDomain}`).get(`/${cacheBust}`).redirects(0);
+      return req.then((res) => {
+        res.should.redirectTo(`https://${resultDomain}${resultPath}${cacheBust}`);
+      });
+    });
   }
 };
